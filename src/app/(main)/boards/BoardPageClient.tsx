@@ -9,9 +9,11 @@ export default function BoardPageClient() {
 	return (
 		<>
 			{isLoggedIn && (
-				<Link href="/boards/write" passHref>
-					<Button>게시글 작성</Button>
-				</Link>
+				<div className="mb-4">
+					<Link href="/boards/write" passHref>
+						<Button variant="primary">게시글 작성</Button>
+					</Link>
+				</div>
 			)}
 		</>
 	);

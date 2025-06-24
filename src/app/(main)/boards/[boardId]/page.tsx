@@ -2,6 +2,7 @@
 
 import BoardItem from '@/components/blocks/BoardItem';
 import BoardActions from '@/components/blocks/BoardActions/boardActions';
+import CommentSection from '@/components/blocks/CommentSection/CommentSection';
 import { fetchBoard, fetchBoards } from '@/services/board-service';
 import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
@@ -34,6 +35,7 @@ export default async function BoardDetailPage({
 			<div>
 				<BoardItem boardId={boardId} />
 				<BoardActions boardId={boardId} />
+				<CommentSection postId={boardId} postAuthor={board?.author} />
 			</div>
 		</div>
 	);
