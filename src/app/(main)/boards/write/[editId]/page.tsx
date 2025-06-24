@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface BoardEditPageProps {
 	params: {
@@ -15,6 +16,15 @@ export default function BoardEditPage({ params }: BoardEditPageProps) {
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
 	const router = useRouter();
+	const { isLoggedIn } = useAuth();
+
+	// 로그인하지 않은 경우 로그인 페이지로 리다이렉트
+	useEffect(() => {
+		if (!isLoggedIn) {
+			alert('로그인이 필요한 서비스입니다.');
+			router.push('/login');
+		}
+	}, [isLoggedIn, router]);
 
 	useEffect(() => {
 		// 기존 게시글 데이터 불러오기
@@ -43,6 +53,15 @@ export default function BoardEditPage({ params }: BoardEditPageProps) {
 		alert('수정 완료');
 		router.push('/boards');
 	};
+
+	// 로그인하지 않은 경우 로딩 상태 표시
+	if (!isLoggedIn) {
+		return (
+			<div className="p-5 text-center">
+				<p>로그인 확인 중...</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="p-5">

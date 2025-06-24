@@ -1,12 +1,22 @@
 'use client';
-import { useState } from 'react';
-import { redirect, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function BoardWritePage() {
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
-	const router = useRouter(); // ✅ Next.js 라우터 객체
+	const router = useRouter();
+	const { isLoggedIn } = useAuth();
+
+	// 로그인하지 않은 경우 로그인 페이지로 리다이렉트
+	useEffect(() => {
+		if (!isLoggedIn) {
+			alert('로그인이 필요한 서비스입니다.');
+			router.push('/login');
+		}
+	}, [isLoggedIn, router]);
 
 	const handleSubmit = async () => {
 		try {
@@ -29,14 +39,21 @@ export default function BoardWritePage() {
 			const result = await res.json();
 			console.log('작성 성공:', result);
 			alert('게시글이 성공적으로 작성되었습니다!');
-			// router.push('/boards');
-			// redirect('/boards');
 			router.replace('/boards');
 		} catch (err) {
 			console.error(err);
 			alert('작성 중 오류 발생');
 		}
 	};
+
+	// 로그인하지 않은 경우 로딩 상태 표시
+	if (!isLoggedIn) {
+		return (
+			<div className="p-5 text-center">
+				<p>로그인 확인 중...</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="p-5">

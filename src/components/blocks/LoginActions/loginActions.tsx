@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Button from 'react-bootstrap/Button';
 
@@ -10,27 +11,13 @@ interface LoginActionsProps {
 
 export default function LoginActions({ email, password }: LoginActionsProps) {
 	const router = useRouter();
+	const { login } = useAuth();
 
 	const handleLogin = async () => {
 		try {
-			const res = await fetch(`http://localhost:3001/users/login`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					email,
-					password,
-				}),
-				credentials: 'include',
-			});
-
-			if (!res.ok) throw new Error('로그인 실패');
-
+			await login(email, password);
 			alert('로그인 성공!');
-			// router.replace('/');
-			// window.location.reload();
-			window.location.href = '/';
+			router.push('/');
 		} catch (error) {
 			console.error(error);
 			alert('로그인 중 오류 발생');
