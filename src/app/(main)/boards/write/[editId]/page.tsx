@@ -1,18 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface BoardEditPageProps {
-	params: {
-		editId: string;
-	};
-}
-
-export default function BoardEditPage({ params }: BoardEditPageProps) {
-	const { editId } = params;
+export default function BoardEditPage() {
+	const params = useParams();
+	const editId = params.editId as string;
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
 	const router = useRouter();
